@@ -1,50 +1,54 @@
 #include "main.h"
 
+/**
+ * _printf - Custom implementation of the printf function
+ * supporting %c, %s, and %%
+ * @format: A format string containing conversion specifiers
+ * @...: Additional arguments corresponding to the conversion
+ * specifiers in the format string
+ *
+ * Return: The number of characters printed (excluding the
+ * null byte at the end)
+ */
 int _printf(const char *format, ...)
 {
 int printed_char;
 va_list args;
+va_start(args, format);
 
 printed_char = 0;
 
-va_start(args, format);
-
 while (*format)
 {
-if (*format == '\0')
-{
-break;
-}
-else if (*format != '%')
+if (*format != '%')
 {
 write(1, format, 1);
 printed_char++;
 }
 else
 {
-if (*(format + 1) == '%')
+format++;
+if (*format == '%')
 {
 write(1, "%", 1);
 printed_char++;
-format++;
 }
-else if (*(format + 1) == 'c')
+else if (*format == 'c')
 {
 int c = va_arg(args, int);
 write(1, &c, 1);
 printed_char++;
-format++;
 }
-else if (*(format + 1) == 's')
+else if (*format == 's')
 {
-char *string = va_arg(args, char*);
+char *string = va_arg(args, char *);
 write(1, string, strlen(string));
 printed_char += strlen(string);
-format++;
 }
 }
 format++;
 }
+
 va_end(args);
-return printed_char;
+return (printed_char);
 }
