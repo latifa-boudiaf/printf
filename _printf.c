@@ -14,13 +14,11 @@ int _printf(const char *format, ...)
 {
 int printed_char;
 va_list lst_args;
-
-if (format==NULL || *format == '\0')
-return -1;
-
 va_start(lst_args, format);
 printed_char = 0;
 
+if (format==NULL || *format == '\0')
+return (-1);
 while (*format)
 {
 if (*format != '%')
@@ -45,9 +43,15 @@ printed_char++;
 else if (*format == 's')
 {
 char *string = va_arg(lst_args, char *);
-
+if (string != NULL)
+{
 write(1, string, strlen(string));
 printed_char += strlen(string);
+}
+else
+{
+return (-1);
+}
 }
 }
 format++;
