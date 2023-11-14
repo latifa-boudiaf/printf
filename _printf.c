@@ -58,6 +58,31 @@ int _printf(const char *format, ...)
 				write(1, buffer, num_length);
 				printed_char += num_length;
 			}
+			else if (*format == 'b')
+			{
+				unsigned int num = va_arg(lst_args, unsigned int);
+				unsigned int mask = 1U << ((sizeof(unsigned int) * 8) - 1);
+				int flag = 0;
+				while (mask)
+				{
+					if (num & mask)
+					{
+						write(1, "1", 1);
+						printed_char++;
+						flag = 1;
+					}
+					else if (flag)
+					{
+						write(1, "0", 1);
+						printed_char++;
+					}
+					mask >>= 1;
+				}
+				if (!flag)
+				{
+					write(1, "0", 1);
+					printed_char++;}
+			}
 		}
 		format++;
 	}
