@@ -92,6 +92,58 @@ int _printf(const char *format, ...)
 					printed_char++;
 				}
 			}
+			else if (*format == 'u')
+			{
+				unsigned int num = va_arg(lst_args, unsigned int);
+				int num_digits = 0;
+				unsigned int temp = num;
+				char digits[20];
+				do
+				{
+					digits[num_digits++] = '0' + (temp % 10);
+					temp /= 10;
+				} while (temp != 0);
+				while (num_digits > 0)
+				{
+					write(1, &digits[--num_digits], 1);
+					printed_char++;
+				}
+			}
+			else if (*format == 'o')
+			{
+				unsigned int num = va_arg(lst_args, unsigned int);
+				int num_digits = 0;
+				unsigned int temp = num;
+				char digits[20];
+				do
+				{
+					digits[num_digits++] = '0' + (temp % 8);
+					temp /= 8;
+				} while (temp != 0);
+				while (num_digits > 0)
+				{
+					write(1, &digits[--num_digits], 1);
+					printed_char++;
+				}
+			}
+			else if (*format == 'x' || *format == 'X')
+			{
+				unsigned int num = va_arg(lst_args, unsigned int);
+				const char *hex_digits = (*format == 'X') ? "0123456789ABCDEF" : "0123456789abcdef";
+				int num_digits = 0;
+				unsigned int temp = num;
+				char digits[20];
+				do
+				{
+					digits[num_digits++] = hex_digits[temp % 16];
+					temp /= 16;
+				} while (temp != 0);
+				while (num_digits > 0)
+				{
+					write(1, &digits[--num_digits], 1);
+					printed_char++;
+				}
+			}
 		}
 		format++;
 	}
