@@ -15,6 +15,7 @@ int _printf(const char *format, ...)
 {
 	int printed_char;
 	va_list lst_args;
+	int i;
 	va_start(lst_args, format);
 
 	printed_char = 0;
@@ -58,6 +59,24 @@ int _printf(const char *format, ...)
                                         printed_char += 6;
                                 }
 			}
+                        else if (*format == 'r')
+                        {
+                                char *string = va_arg(lst_args, char *);
+                                if (string != NULL)
+                                {
+                                        int len = strlen(string);
+                                        for (i = len - 1; i >= 0; i--)
+                                        {
+                                                write(1, &string[i], 1);
+                                                printed_char++;
+                                        }
+                                }
+                                else
+                                {
+                                        write(1, "(null)", 6);
+                                        printed_char += 6;
+                                }
+                        }
 			else if (*format == 'd' || *format == 'i')
 			{
 				int num = va_arg(lst_args, int);
