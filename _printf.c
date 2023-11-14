@@ -2,7 +2,7 @@
 
 /**
  * _printf - Custom implementation of the printf function
- * supporting %c, %s, and %%
+ * supporting %c, %s, %d, %i, and %%
  * @format: A format string containing conversion specifiers
  * @...: Additional arguments corresponding to the conversion
  * specifiers in the format string
@@ -15,10 +15,13 @@ int _printf(const char *format, ...)
 int printed_char;
 va_list lst_args;
 va_start(lst_args, format);
+
 printed_char = 0;
 
 if (format==NULL || *format == '\0')
+{
 return (-1);
+}
 while (*format)
 {
 if (*format != '%')
@@ -43,15 +46,16 @@ printed_char++;
 else if (*format == 's')
 {
 char *string = va_arg(lst_args, char *);
-if (string != NULL)
-{
 write(1, string, strlen(string));
 printed_char += strlen(string);
 }
-else
+else if (*format == 'd' || *format == 'i')
 {
-return (-1);
-}
+int num = va_arg(lst_args, int);
+char buffer[12];
+int num_length = snprintf(buffer, sizeof(buffer), "%d", num);
+write(1, buffer, num_length);
+printed_char += num_length;
 }
 }
 format++;
