@@ -15,6 +15,7 @@ int _printf(const char *format, ...)
 {
 	int printed_char;
 	va_list lst_args;
+	char *str;
 	va_start(lst_args, format);
 
 	printed_char = 0;
@@ -47,8 +48,16 @@ int _printf(const char *format, ...)
 			else if (*format == 's')
 			{
 				char *string = va_arg(lst_args, char *);
-				write(1, string, strlen(string));
-				printed_char += strlen(string);
+				if (string != NULL)
+                                {
+					write(1, string, strlen(string));
+					printed_char += strlen(string);
+                                }
+                                else
+                                {
+                                        write(1, "(null)", 6);
+                                        printed_char += 6;
+                                }
 			}
 			else if (*format == 'd' || *format == 'i')
 			{
@@ -81,7 +90,8 @@ int _printf(const char *format, ...)
 				if (!flag)
 				{
 					write(1, "0", 1);
-					printed_char++;}
+					printed_char++;
+				}
 			}
 		}
 		format++;
