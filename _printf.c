@@ -15,7 +15,6 @@ int _printf(const char *format, ...)
 {
 	int printed_char;
 	va_list lst_args;
-	char *str;
 	va_start(lst_args, format);
 
 	printed_char = 0;
